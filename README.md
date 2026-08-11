@@ -1,2 +1,2 @@
-# lost-and-found-159511
-A University Lost and Found Management System
+# University Lost and Found System
+A simple web system that allows guards to report lost and found items while students view available items and their locations. 
