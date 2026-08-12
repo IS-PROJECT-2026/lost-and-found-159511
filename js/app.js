@@ -1,1 +1,1 @@
-console.log("Student item viewing page loaded");
+console.log("Guard dashboard loaded successfully");

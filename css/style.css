@@ -32,3 +32,44 @@ body {
     margin-top: 0;
 
 }
+.dashboard {
+
+    display: flex;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+
+
+.dashboard-card {
+
+
+    background: white;
+
+    padding: 20px;
+
+    width: 200px;
+
+    text-align: center;
+
+    border-radius: 8px;
+
+
+}
+
+
+
+button {
+
+
+    padding: 12px 20px;
+
+    margin: 10px;
+
+    cursor: pointer;
+
+
+}
