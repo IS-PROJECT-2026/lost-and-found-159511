@@ -1,1 +1,1 @@
-console.log("Lost and Found System Started");
+console.log("Student item viewing page loaded");
