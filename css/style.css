@@ -73,3 +73,62 @@ button {
 
 
 }
+.form-container {
+
+    background:white;
+
+    padding:30px;
+
+    width:60%;
+
+    margin:auto;
+
+    border-radius:10px;
+
+}
+
+
+
+form {
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+input,
+textarea,
+select {
+
+    padding:10px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+textarea {
+
+    height:100px;
+
+}
+
+
+
+button {
+
+    background:#333;
+
+    color:white;
+
+    border:none;
+
+    padding:12px;
+
+    border-radius:5px;
+
+}
