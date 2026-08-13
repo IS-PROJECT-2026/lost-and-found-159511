@@ -38,14 +38,17 @@ Guard item reporting portal
 <h2>Item Details</h2>
 
 
-<form>
+<form id="itemForm">
 
 
 <label>
 Item Name
 </label>
 
-<input type="text" placeholder="Enter item name">
+<input 
+id="itemName"
+type="text"
+placeholder="Enter item name">
 
 
 
@@ -53,7 +56,10 @@ Item Name
 Category
 </label>
 
-<input type="text" placeholder="Bag, Phone, ID etc.">
+<input 
+id="category"
+type="text"
+placeholder="Bag, Phone, ID etc.">
 
 
 
@@ -61,25 +67,24 @@ Category
 Description
 </label>
 
-<textarea placeholder="Describe the item"></textarea>
-
-
+<textarea id="description"></textarea>
 
 <label>
 Found Location
 </label>
 
-<input type="text" placeholder="Where was it found?">
-
+<input 
+id="location"
+type="text">
 
 
 <label>
 Lost & Found Office
 </label>
 
-<input type="text" placeholder="Which office stores it?">
-
-
+<input 
+id="office"
+type="text">
 
 <label>
 Date Found
@@ -93,7 +98,7 @@ Date Found
 Status
 </label>
 
-<select>
+<select id="status">
 
 <option>
 Available
