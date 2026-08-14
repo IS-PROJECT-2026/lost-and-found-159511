@@ -132,3 +132,26 @@ button {
     border-radius:5px;
 
 }
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.available {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+
+.claimed {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.returned {
+    background-color: #cce5ff;
+    color: #004085;
+}
