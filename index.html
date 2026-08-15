@@ -22,7 +22,30 @@ Helping students locate lost items across university offices.
 <h2>Available Lost & Found Items</h2>
 
 
-<div class="items-container">
+<section>
+    <h2>Available Lost & Found Items</h2>
+    <div style="margin: 20px 0 30px 0;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input 
+                id="searchInput" 
+                type="text" 
+                placeholder="🔍 Search by name, category, or location..." 
+                style="flex: 1; padding: 14px 20px; font-size: 16px; border: 2px solid #ddd; border-radius: 8px; outline: none; transition: border-color 0.3s;"
+                onkeyup="searchItems()"
+            >
+            <button onclick="searchItems()" style="padding: 14px 30px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                Search
+            </button>
+            <button onclick="document.getElementById('searchInput').value=''; searchItems();" style="padding: 14px 20px; background: #6c757d; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                Clear
+            </button>
+        </div>
+        <p id="results-count" style="margin-top: 10px; color: #666; font-size: 14px;"></p>
+    </div>
+
+    <div class="items-container" id="items-container">
+    </div>
+</section>
 
 
 <div class="item-card">

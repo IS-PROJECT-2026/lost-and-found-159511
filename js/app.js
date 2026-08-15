@@ -6,7 +6,11 @@ if (form) {
         event.preventDefault();
 
         const item = {
+<<<<<<< HEAD
             id: Date.now(), // Unique identifier for each item
+=======
+            id: Date.now(),
+>>>>>>> 42f6d721b6e2fce05250850ce6fe9f06cf964bca
             name: document.getElementById("itemName").value,
             category: document.getElementById("category").value,
             description: document.getElementById("description").value,
@@ -62,6 +66,7 @@ if (container) {
         });
     }
 
+<<<<<<< HEAD
     // ========== STATUS UPDATE FUNCTIONALITY (#6) ==========
     // Cycles through statuses: Available -> Claim Pending -> Collected -> Returned
     window.updateStatus = function(id) {
@@ -115,6 +120,81 @@ if (container) {
         }
     }
 
+=======
+    // ========== SEARCH FUNCTIONALITY (#7) ==========
+    // Filters items by name, category, location, or description
+    window.searchItems = function() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        
+        if (searchTerm === '') {
+            renderItems(items);
+            return;
+        }
+        
+        const filtered = items.filter(item => 
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.category.toLowerCase().includes(searchTerm) ||
+            item.location.toLowerCase().includes(searchTerm) ||
+            (item.description && item.description.toLowerCase().includes(searchTerm))
+        );
+        
+        renderItems(filtered);
+        
+        // Display results count
+        const resultsCount = document.getElementById('results-count');
+        if (resultsCount) {
+            resultsCount.textContent = `Found ${filtered.length} item(s) matching "${searchTerm}"`;
+        }
+    };
+
+    // ========== STATUS UPDATE ==========
+    window.updateStatus = function(id) {
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        const itemIndex = items.findIndex(i => i.id === id);
+        
+        if (itemIndex === -1) {
+            alert('Item not found!');
+            return;
+        }
+        
+        const statuses = ['Available', 'Claim Pending', 'Collected', 'Returned'];
+        const currentIndex = statuses.indexOf(items[itemIndex].status);
+        const nextIndex = (currentIndex + 1) % statuses.length;
+        items[itemIndex].status = statuses[nextIndex];
+        
+        localStorage.setItem("items", JSON.stringify(items));
+        renderItems(items);
+        updateDashboardStats();
+    };
+
+    // ========== DELETE ITEM ==========
+    window.deleteItem = function(id) {
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        items = items.filter(i => i.id !== id);
+        localStorage.setItem("items", JSON.stringify(items));
+        renderItems(items);
+        updateDashboardStats();
+    };
+
+    // ========== DASHBOARD STATS ==========
+    function updateDashboardStats() {
+        const items = JSON.parse(localStorage.getItem("items")) || [];
+        const total = items.length;
+        const available = items.filter(i => i.status === 'Available').length;
+        const collected = items.filter(i => i.status === 'Collected' || i.status === 'Returned').length;
+        
+        const cards = document.querySelectorAll('.dashboard-card');
+        if (cards.length === 3) {
+            cards[0].querySelector('p').textContent = total;
+            cards[1].querySelector('p').textContent = available;
+            cards[2].querySelector('p').textContent = collected;
+        }
+    }
+
+>>>>>>> 42f6d721b6e2fce05250850ce6fe9f06cf964bca
     // ========== INITIALIZATION ==========
     let items = JSON.parse(localStorage.getItem("items")) || [];
     renderItems(items);
