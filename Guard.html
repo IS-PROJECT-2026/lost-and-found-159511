@@ -2,112 +2,59 @@
 <html lang="en">
 
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Guard Dashboard</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guard Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
-
 <body>
+    <header>
+        <h1>🛡️ Guard Dashboard</h1>
+        <p>Manage university lost and found items</p>
+        <a href="index.html">← Back to Student View</a>
+    </header>
 
+    <main>
+        <section class="dashboard">
+            <div class="dashboard-card">
+                <h2>Total Items</h2>
+                <p id="total-items">0</p>
+            </div>
 
-<header>
+            <div class="dashboard-card">
+                <h2>Available Items</h2>
+                <p id="available-items">0</p>
+            </div>
 
-<h1>Guard Dashboard</h1>
+            <div class="dashboard-card">
+                <h2>Collected Items</h2>
+                <p id="collected-items">0</p>
+            </div>
+        </section>
 
-<p>
-Manage university lost and found items
-</p>
+        <section style="margin-top: 30px;">
+            <h2>Item Management</h2>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                <a href="add-item.html">
+                    <button style="padding: 14px 30px; font-size: 16px;">
+                        ➕ Add New Item
+                    </button>
+                </a>
+                <a href="index.html">
+                    <button style="padding: 14px 30px; font-size: 16px; background: #17a2b8;">
+                        📋 View All Items
+                    </button>
+                </a>
+            </div>
+        </section>
+    </main>
 
-</header>
+    <footer>
+        <p>Guard Portal - Lost & Found System © 2026</p>
+    </footer>
 
-
-
-<main>
-
-
-<section class="dashboard">
-
-
-<div class="dashboard-card">
-
-<h2>Total Items</h2>
-
-<p>10</p>
-
-</div>
-
-
-
-<div class="dashboard-card">
-
-<h2>Available Items</h2>
-
-<p>7</p>
-
-</div>
-
-
-
-<div class="dashboard-card">
-
-<h2>Collected Items</h2>
-
-<p>3</p>
-
-</div>
-
-
-</section>
-
-
-
-<section>
-
-
-<h2>Item Management</h2>
-
-
-<a href="add-item.html">
-
-<button>
-Add New Item
-</button>
-
-</a>
-
-
-<button>
-View All Items
-</button>
-
-
-</section>
-
-
-
-</main>
-
-
-<footer>
-
-<p>
-Guard Portal - Lost & Found System
-</p>
-
-</footer>
-
-
-
-<script src="js/app.js"></script>
-
-
+    <script src="js/app.js"></script>
 </body>
 
 </html>
