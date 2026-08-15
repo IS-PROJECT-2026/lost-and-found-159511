@@ -133,25 +133,47 @@ button {
 
 }
 .status {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: bold;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-weight:bold;
+
 }
 
 
 .available {
-    background-color: #d4edda;
-    color: #155724;
+
+background:#d4edda;
+
+color:green;
+
 }
 
 
-.claimed {
-    background-color: #fff3cd;
-    color: #856404;
+.pending {
+
+background:#fff3cd;
+
+color:#856404;
+
 }
+
+
+.collected {
+
+background:#cce5ff;
+
+color:#004085;
+
+}
+
 
 .returned {
-    background-color: #cce5ff;
-    color: #004085;
+
+background:#e2e3e5;
+
+color:#383d41;
+
 }

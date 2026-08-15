@@ -99,9 +99,14 @@ ${item.office}
 
 <p>
 <strong>Status:</strong>
-${item.status}
-</p>
 
+<span class="status">
+
+${item.status}
+
+</span>
+
+</p>
 
 </div>
 
