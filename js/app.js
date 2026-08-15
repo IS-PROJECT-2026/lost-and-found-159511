@@ -1,114 +1,142 @@
+// ========== FORM HANDLING ==========
 const form = document.getElementById("itemForm");
 
+if (form) {
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-if(form){
+        const item = {
+            id: Date.now(),
+            name: document.getElementById("itemName").value,
+            category: document.getElementById("category").value,
+            description: document.getElementById("description").value,
+            location: document.getElementById("location").value,
+            office: document.getElementById("office").value,
+            dateFound: document.getElementById("dateFound").value,
+            status: document.getElementById("status").value,
+            createdAt: new Date().toISOString()
+        };
 
-form.addEventListener("submit", function(event){
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        items.push(item);
+        localStorage.setItem("items", JSON.stringify(items));
 
-
-event.preventDefault();
-
-
-
-const item = {
-
-name: document.getElementById("itemName").value,
-
-category: document.getElementById("category").value,
-
-description: document.getElementById("description").value,
-
-location: document.getElementById("location").value,
-
-office: document.getElementById("office").value,
-
-status: document.getElementById("status").value
-
-};
-
-
-
-let items = JSON.parse(localStorage.getItem("items")) || [];
-
-
-items.push(item);
-
-
-localStorage.setItem(
-"items",
-JSON.stringify(items)
-);
-
-
-
-alert("Item successfully added!");
-
-
-
-form.reset();
-
-
-});
-
-
+        alert("Item successfully added!");
+        form.reset();
+    });
 }
-const container =
-document.getElementById("items-container");
 
+// ========== DISPLAY ITEMS ==========
+const container = document.getElementById("items-container");
 
-if(container){
+if (container) {
+    function renderItems(items) {
+        container.innerHTML = '';
+        
+        if (items.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">No items found. Add your first item!</p>';
+            return;
+        }
 
+        items.forEach(item => {
+            const statusClass = item.status.toLowerCase().replace(' ', '-');
+            
+            container.innerHTML += `
+                <div class="item-card" data-id="${item.id}">
+                    <h3>${item.name}</h3>
+                    <p><strong>Category:</strong> ${item.category}</p>
+                    <p><strong>Description:</strong> ${item.description || 'No description provided'}</p>
+                    <p><strong>Found Location:</strong> ${item.location}</p>
+                    <p><strong>Office:</strong> ${item.office}</p>
+                    <p><strong>Date Found:</strong> ${item.dateFound || 'Not specified'}</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status ${statusClass}">${item.status}</span>
+                    </p>
+                    <div style="margin-top: 10px;">
+                        <button onclick="updateStatus(${item.id})" class="btn-update">Update Status</button>
+                        <button onclick="deleteItem(${item.id})" class="btn-delete">Delete</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
 
-let items =
-JSON.parse(localStorage.getItem("items")) || [];
+    // ========== SEARCH FUNCTIONALITY (#7) ==========
+    // Filters items by name, category, location, or description
+    window.searchItems = function() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        
+        if (searchTerm === '') {
+            renderItems(items);
+            return;
+        }
+        
+        const filtered = items.filter(item => 
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.category.toLowerCase().includes(searchTerm) ||
+            item.location.toLowerCase().includes(searchTerm) ||
+            (item.description && item.description.toLowerCase().includes(searchTerm))
+        );
+        
+        renderItems(filtered);
+        
+        // Display results count
+        const resultsCount = document.getElementById('results-count');
+        if (resultsCount) {
+            resultsCount.textContent = `Found ${filtered.length} item(s) matching "${searchTerm}"`;
+        }
+    };
 
+    // ========== STATUS UPDATE ==========
+    window.updateStatus = function(id) {
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        const itemIndex = items.findIndex(i => i.id === id);
+        
+        if (itemIndex === -1) {
+            alert('Item not found!');
+            return;
+        }
+        
+        const statuses = ['Available', 'Claim Pending', 'Collected', 'Returned'];
+        const currentIndex = statuses.indexOf(items[itemIndex].status);
+        const nextIndex = (currentIndex + 1) % statuses.length;
+        items[itemIndex].status = statuses[nextIndex];
+        
+        localStorage.setItem("items", JSON.stringify(items));
+        renderItems(items);
+        updateDashboardStats();
+    };
 
+    // ========== DELETE ITEM ==========
+    window.deleteItem = function(id) {
+        if (!confirm('Are you sure you want to delete this item?')) return;
+        
+        let items = JSON.parse(localStorage.getItem("items")) || [];
+        items = items.filter(i => i.id !== id);
+        localStorage.setItem("items", JSON.stringify(items));
+        renderItems(items);
+        updateDashboardStats();
+    };
 
-items.forEach(item => {
+    // ========== DASHBOARD STATS ==========
+    function updateDashboardStats() {
+        const items = JSON.parse(localStorage.getItem("items")) || [];
+        const total = items.length;
+        const available = items.filter(i => i.status === 'Available').length;
+        const collected = items.filter(i => i.status === 'Collected' || i.status === 'Returned').length;
+        
+        const cards = document.querySelectorAll('.dashboard-card');
+        if (cards.length === 3) {
+            cards[0].querySelector('p').textContent = total;
+            cards[1].querySelector('p').textContent = available;
+            cards[2].querySelector('p').textContent = collected;
+        }
+    }
 
-
-container.innerHTML += `
-
-<div class="item-card">
-
-<h3>${item.name}</h3>
-
-<p>
-<strong>Category:</strong>
-${item.category}
-</p>
-
-
-<p>
-<strong>Description:</strong>
-${item.description}
-</p>
-
-
-<p>
-<strong>Found Location:</strong>
-${item.location}
-</p>
-
-
-<p>
-<strong>Office:</strong>
-${item.office}
-</p>
-
-
-<p>
-<strong>Status:</strong>
-${item.status}
-</p>
-
-
-</div>
-
-`;
-
-
-});
-
-
+    // ========== INITIALIZATION ==========
+    let items = JSON.parse(localStorage.getItem("items")) || [];
+    renderItems(items);
+    updateDashboardStats();
 }
