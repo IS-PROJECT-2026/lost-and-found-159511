@@ -50,38 +50,10 @@ if (container) {
                         <strong>Status:</strong>
                         <span class="status ${statusClass}">${item.status}</span>
                     </p>
-                    <div>
-                        <button onclick="updateStatus(${item.id})">Update Status</button>
-                        <button onclick="deleteItem(${item.id})">Delete</button>
-                    </div>
                 </div>
             `;
         });
     }
-
-    window.updateStatus = function(id) {
-        let items = JSON.parse(localStorage.getItem("items")) || [];
-        const index = items.findIndex(i => i.id === id);
-        
-        if (index === -1) return;
-        
-        const statusList = ['Available', 'Claim Pending', 'Collected', 'Returned'];
-        const current = statusList.indexOf(items[index].status);
-        const next = (current + 1) % statusList.length;
-        items[index].status = statusList[next];
-        
-        localStorage.setItem("items", JSON.stringify(items));
-        renderItems(items);
-    };
-
-    window.deleteItem = function(id) {
-        if (!confirm('Delete this item?')) return;
-        
-        let items = JSON.parse(localStorage.getItem("items")) || [];
-        items = items.filter(i => i.id !== id);
-        localStorage.setItem("items", JSON.stringify(items));
-        renderItems(items);
-    };
 
     window.searchItems = function() {
         const term = document.getElementById('searchInput').value.toLowerCase();
@@ -101,28 +73,6 @@ if (container) {
         renderItems(filtered);
     };
 
-    function addSearchBar() {
-        const section = container.closest('section');
-        if (!section) return;
-        
-        const searchHTML = `
-            <div style="margin-bottom:20px;">
-                <input 
-                    id="searchInput" 
-                    type="text" 
-                    placeholder="Search items..." 
-                    onkeyup="searchItems()"
-                    style="width:100%; padding:10px; border:2px solid #ddd; border-radius:5px;"
-                >
-            </div>
-        `;
-        
-        const div = document.createElement('div');
-        div.innerHTML = searchHTML;
-        section.insertBefore(div.firstElementChild, container);
-    }
-
     let items = JSON.parse(localStorage.getItem("items")) || [];
     renderItems(items);
-    addSearchBar();
 }
