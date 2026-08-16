@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guard Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Guard Dashboard</h1>
+        <p>Manage lost and found items</p>
+        <a href="index.html">← Back to Student View</a>
+        <button onclick="logout()" style="background: #dc3545; margin-left: 10px;">Logout</button>
+    </header>
+
+    <main>
+        <section class="dashboard">
+            <div class="dashboard-card">
+                <h2>Total Items</h2>
+                <p id="total">0</p>
+            </div>
+            <div class="dashboard-card">
+                <h2>Available</h2>
+                <p id="available">0</p>
+            </div>
+            <div class="dashboard-card">
+                <h2>Collected</h2>
+                <p id="collected">0</p>
+            </div>
+        </section>
+
+        <section style="margin-top: 30px;">
+            <h2>Item Management</h2>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="add-item.html">
+                    <button>Add New Item</button>
+                </a>
+                <button onclick="viewAllItems()">View All Items</button>
+            </div>
+        </section>
+
+        <section style="margin-top: 30px;">
+            <h2>All Items</h2>
+            <div class="items-container" id="guard-items-container">
+                <!-- Items will appear here with update/delete options -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Guard Portal</p>
+    </footer>
+
+    <script>
+        function logout() {
+            localStorage.removeItem("loggedInGuard");
+            window.location.href = 'Guard.html';
+        }
+
+        function viewAllItems() {
+            const items = JSON.parse(localStorage.getItem("items")) || [];
+            const container = document.getElementById('guard-items-container');
+            
+            if (items.length === 0) {
+                container.innerHTML = '<p>No items found.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            items.forEach(item => {
+                const statusClass = item.status.toLowerCase();
+                container.innerHTML += `
+                    <div class="item-card">
+                        <h3>${item.name}</h3>
+                        <p><strong>Category:</strong> ${item.category}</p>
+                        <p><strong>Description:</strong> ${item.description || 'No description'}</p>
+                        <p><strong>Location:</strong> ${item.location}</p>
+                        <p><strong>Office:</strong> ${item.office}</p>
+                        <p><strong>Date Found:</strong> ${item.dateFound || 'Not specified'}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="status ${statusClass}">${item.status}</span>
+                        </p>
+                        <div style="margin-top: 10px;">
+                            <button onclick="updateStatus(${item.id})" style="background: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">Update Status</button>
+                            <button onclick="deleteItem(${item.id})" style="background: #dc3545; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateStatus(id) {
+            let items = JSON.parse(localStorage.getItem("items")) || [];
+            const index = items.findIndex(i => i.id === id);
+            
+            if (index === -1) return;
+            
+            // Toggle between available and collected
+            items[index].status = items[index].status === 'available' ? 'collected' : 'available';
+            
+            localStorage.setItem("items", JSON.stringify(items));
+            viewAllItems();
+            updateStats();
+        }
+
+        function deleteItem(id) {
+            if (!confirm('Delete this item?')) return;
+            
+            let items = JSON.parse(localStorage.getItem("items")) || [];
+            items = items.filter(i => i.id !== id);
+            localStorage.setItem("items", JSON.stringify(items));
+            viewAllItems();
+            updateStats();
+        }
+
+        function updateStats() {
+            const items = JSON.parse(localStorage.getItem("items")) || [];
+            document.getElementById('total').textContent = items.length;
+            document.getElementById('available').textContent = items.filter(i => i.status === 'available').length;
+            document.getElementById('collected').textContent = items.filter(i => i.status === 'collected').length;
+        }
+
+        // Check if guard is logged in
+        const loggedIn = JSON.parse(localStorage.getItem("loggedInGuard"));
+        if (!loggedIn) {
+            window.location.href = 'Guard.html';
+        }
+
+        updateStats();
+        viewAllItems();
+    </script>
+</body>
+
+</html>
