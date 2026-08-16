@@ -4,57 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guard Dashboard</title>
+    <title>Guard Login</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <header>
-        <h1>🛡️ Guard Dashboard</h1>
-        <p>Manage university lost and found items</p>
+        <h1>Guard Login</h1>
+        <p>Access the lost and found management system</p>
         <a href="index.html">← Back to Student View</a>
     </header>
 
     <main>
-        <section class="dashboard">
-            <div class="dashboard-card">
-                <h2>Total Items</h2>
-                <p id="total-items">0</p>
-            </div>
+        <section class="form-container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label>Email</label>
+                <input id="email" type="email" placeholder="guard@university.com" required>
 
-            <div class="dashboard-card">
-                <h2>Available Items</h2>
-                <p id="available-items">0</p>
-            </div>
+                <label>Password</label>
+                <input id="password" type="password" placeholder="Enter password" required>
 
-            <div class="dashboard-card">
-                <h2>Collected Items</h2>
-                <p id="collected-items">0</p>
-            </div>
-        </section>
-
-        <section style="margin-top: 30px;">
-            <h2>Item Management</h2>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
-                <a href="add-item.html">
-                    <button style="padding: 14px 30px; font-size: 16px;">
-                        ➕ Add New Item
-                    </button>
-                </a>
-                <a href="index.html">
-                    <button style="padding: 14px 30px; font-size: 16px; background: #17a2b8;">
-                        📋 View All Items
-                    </button>
-                </a>
-            </div>
+                <button type="submit">Login</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 15px;">
+                Don't have an account? <a href="register.html" style="color: #333; font-weight: bold;">Register here</a>
+            </p>
+            
+            <p id="loginError" style="color:red; display:none; text-align:center;">Invalid email or password!</p>
         </section>
     </main>
 
     <footer>
-        <p>Guard Portal - Lost & Found System © 2026</p>
+        <p>Guard Portal</p>
     </footer>
 
-    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Get registered guards from localStorage
+            const guards = JSON.parse(localStorage.getItem("guards")) || [];
+            
+            // Check if credentials match any registered guard
+            const found = guards.find(g => g.email === email && g.password === password);
+            
+            if (found) {
+                localStorage.setItem("loggedInGuard", JSON.stringify(found));
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        });
+    </script>
 </body>
 
 </html>

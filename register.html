@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Guard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Register as Guard</h1>
+        <p>Create an account to manage lost and found items</p>
+        <a href="Guard.html">← Back to Login</a>
+    </header>
+
+    <main>
+        <section class="form-container">
+            <h2>Create Account</h2>
+            <form id="registerForm">
+                <label>Full Name</label>
+                <input id="fullName" type="text" placeholder="Enter your full name" required>
+
+                <label>Email</label>
+                <input id="email" type="email" placeholder="guard@university.com" required>
+
+                <label>Password</label>
+                <input id="password" type="password" placeholder="Create a password" required>
+
+                <label>Confirm Password</label>
+                <input id="confirmPassword" type="password" placeholder="Confirm your password" required>
+
+                <button type="submit">Register</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 15px;">
+                Already have an account? <a href="Guard.html" style="color: #333; font-weight: bold;">Login here</a>
+            </p>
+            
+            <p id="registerError" style="color:red; display:none; text-align:center;"></p>
+            <p id="registerSuccess" style="color:green; display:none; text-align:center;"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Guard Portal</p>
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            // Check if passwords match
+            if (password !== confirm) {
+                document.getElementById('registerError').textContent = 'Passwords do not match!';
+                document.getElementById('registerError').style.display = 'block';
+                document.getElementById('registerSuccess').style.display = 'none';
+                return;
+            }
+            
+            // Get existing guards
+            let guards = JSON.parse(localStorage.getItem("guards")) || [];
+            
+            // Check if email already registered
+            if (guards.find(g => g.email === email)) {
+                document.getElementById('registerError').textContent = 'Email already registered!';
+                document.getElementById('registerError').style.display = 'block';
+                document.getElementById('registerSuccess').style.display = 'none';
+                return;
+            }
+            
+            // Add new guard
+            guards.push({
+                name: name,
+                email: email,
+                password: password,
+                registeredAt: new Date().toISOString()
+            });
+            
+            localStorage.setItem("guards", JSON.stringify(guards));
+            
+            document.getElementById('registerSuccess').textContent = 'Registration successful! Redirecting to login...';
+            document.getElementById('registerSuccess').style.display = 'block';
+            document.getElementById('registerError').style.display = 'none';
+            
+            // Redirect to login after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'Guard.html';
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
