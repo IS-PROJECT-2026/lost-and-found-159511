@@ -167,7 +167,14 @@ footer {
         grid-template-columns: 1fr;
     }
 }
-/* New button style */
+/* New button style for conflict */
+.btn-test {
+    background: #ff0000;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+}
 .btn-new {
     background: #007bff;
     color: white;
